@@ -44,7 +44,6 @@ public class Req {
         String sourceName;
         String param = " ";
         if ("POST".equals(httpRequestType)) {
-            poohMode = "topic";
             param = content.substring(content.indexOf("d") + 3, content.lastIndexOf("\""));
             sourceName = content.substring(content.lastIndexOf("/") + 1, content.lastIndexOf(" -d"));
         } else {

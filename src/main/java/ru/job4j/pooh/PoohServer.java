@@ -6,11 +6,12 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PoohServer {
-    private final HashMap modes = new HashMap<>();
+    private final Map<String, Service> modes = new HashMap<>();
 
     public void start() {
         modes.put("queue", new QueueService());
@@ -28,7 +29,7 @@ public class PoohServer {
                         int total = input.read(buff);
                         String content = new String(Arrays.copyOfRange(buff, 0, total), StandardCharsets.UTF_8);
                         Req req = Req.of(content);
-                        Service service = (Service) modes.get(req.getPoohMode());
+                        Service service = modes.get(req.getPoohMode());
                         Resp resp = service.process(req);
                         String ls = System.lineSeparator();
                         out.write(("HTTP/1.1 " + resp.status() + ls + ls).getBytes());
